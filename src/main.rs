@@ -1,9 +1,9 @@
 mod app;
-mod navbar;
-mod theme_switcher;
+mod backend;
+mod components;
 
 use app::*;
-use leptos::*;
+use leptos::prelude::*;
 
 fn main() {
     console_error_panic_hook::set_once();

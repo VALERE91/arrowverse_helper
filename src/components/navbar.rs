@@ -1,6 +1,7 @@
-use leptos::*;
+use leptos::prelude::*;
+use leptos_router::components::A;
 
-use crate::theme_switcher::ThemeSwitcher;
+use crate::components::theme_switcher::ThemeSwitcher;
 
 #[component]
 pub fn NavBar() -> impl IntoView {
@@ -25,9 +26,9 @@ pub fn NavBar() -> impl IntoView {
               <ul
                 tabindex="0"
                 class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                <li><a>Homepage</a></li>
-                <li><a>Portfolio</a></li>
-                <li><a>About</a></li>
+                <li><A href="">Homepage</A></li>
+                <li><A href="shows">Shows</A></li>
+                <li><A href="next_episode">Next Episode</A></li>
               </ul>
             </div>
           </div>

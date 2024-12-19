@@ -1,20 +1,27 @@
-use leptos::*;
-use wasm_bindgen::prelude::*;
-
-use crate::navbar::NavBar;
-
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "core"])]
-    async fn invoke(cmd: &str, args: JsValue) -> JsValue;
-}
+use crate::components::*;
+use leptos::prelude::*;
+use leptos_router::components::*;
+use leptos_router::path;
+use navbar::NavBar;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
-        <main class="container">
+        <Router>
             <NavBar />
-            <h1>"Welcome to Tauri + Leptos"</h1>
-        </main>
+            <main>
+                <Routes fallback=home::Home>
+                    <Route
+                        path=path!("")
+                        view=home::Home />
+                    <Route
+                        path=path!("shows")
+                        view=shows::Shows />
+                    <Route
+                        path=path!("next_episode")
+                        view=next_episode::NextEpisode />
+                </Routes>
+            </main>
+        </Router>
     }
 }
