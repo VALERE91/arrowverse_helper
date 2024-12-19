@@ -1,26 +1,25 @@
+use std::collections::HashMap;
+
+use serde::{Deserialize, Serialize};
+
+use super::invoke_without_args;
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TVShow {
+    pub id: i32,
     pub name: String,
     pub poster: String,
 }
 
 impl TVShow {
-    pub fn get_all() -> anyhow::Result<Vec<Self>> {
-        Ok(vec![
-            TVShow {
-                name: "Arrow".to_string(),
-                poster: "https://image.tmdb.org/t/p/w500/6moGODTcbw8vH8kY8V5bKurWt0Z.jpg"
-                    .to_string(),
-            },
-            TVShow {
-                name: "The Flash".to_string(),
-                poster: "https://image.tmdb.org/t/p/w500/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg"
-                    .to_string(),
-            },
-            TVShow {
-                name: "Supergirl".to_string(),
-                poster: "https://image.tmdb.org/t/p/w500/vqBsgL9nd2v04ZvCqPzwtckDdFD.jpg"
-                    .to_string(),
-            },
-        ])
+    pub async fn get_all() -> Vec<Self> {
+        let shows = invoke_without_args("shows").await;
+        let shows_array: Vec<HashMap<String, String>> =
+            serde_wasm_bindgen::from_value(shows).unwrap();
+
+        for show in shows_array {
+            println!("{:?}", show);
+        }
+        vec![]
     }
 }

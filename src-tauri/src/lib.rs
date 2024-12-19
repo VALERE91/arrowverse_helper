@@ -1,27 +1,26 @@
-use cache::prepare_cache;
+use std::sync::Mutex;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use cache::Cache;
+use tauri::Manager;
+
 mod cache;
 mod db;
+mod handlers;
 mod models;
 mod schema;
 mod tmdb;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub async fn run() -> anyhow::Result<()> {
+    let cache = Cache::new();
     tauri::Builder::default()
-        .setup(|_app| {
+        .setup(|app| {
             db::init();
-            tauri::async_runtime::spawn(async move { prepare_cache().await });
+            app.manage(Mutex::new(cache));
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![handlers::get_shows])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 

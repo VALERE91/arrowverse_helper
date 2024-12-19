@@ -2,7 +2,7 @@ use leptos::prelude::*;
 
 #[component]
 pub fn ThemeSwitcher() -> impl IntoView {
-    let (theme, _set_theme) = create_signal("dark");
+    let (theme, _set_theme) = signal("dark");
 
     let next_theme = move || {
         if theme.get() == "dark" {
